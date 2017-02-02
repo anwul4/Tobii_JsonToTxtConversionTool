@@ -1,0 +1,19 @@
+INDEX VERSION 1.127+E:\Medialogy\Augmented Cognition Lab\TobiiJsonToOgamaConverter\.metadata\.plugins\org.eclipse.jdt.core
+2997567257.index
+1525087677.index
+3314433690.index
+91472061.index
+30881555.index
+3643810303.index
+843494433.index
+2561179376.index
+2179917189.index
+1475717011.index
+1841280308.index
+2221491804.index
+543038442.index
+1539866187.index
+1199826107.index
+2911469802.index
+449440424.index
+194205294.index
