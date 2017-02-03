@@ -8,4 +8,6 @@ The source code
 
 A Runable .jar file 
 
-A technical documentation <-- this can be used as a reference in case the program is used as a part of research, academia or student projects
+A technical documentation <-- In case you want to know what is going on inside the software and how to use it please read this. 
+
+Here is a link in which you can see how to cite this software http://vbn.aau.dk/en/publications/data-conversion-tool-for-tobii-pro-glasses-2-live-data-files(3d12851f-adec-415a-9c48-68a5eedb1811)/export.html
