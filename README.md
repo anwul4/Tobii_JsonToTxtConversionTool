@@ -12,7 +12,9 @@ Version 1.1 of the runable jar -> created through an updated version of Eclipse 
 
 Version 1.2 of the ruanble jar + sourcecode change -> the time stamps from the videofeed was taken into consideration and the latency in the recording, now the data should be synched to the videofeed. 
 in the documentation the following variable weren't described. 
+
 vts = video time stamp, if vts = 0, then the corresponding ts is equal to the 0th frame from the videofeed. 
+
 l = latency = time it took from when the frame was captured in the feed to the livedata was placed in the livestream file. 
 additionally the software is now capable of taking any length recording intop consideration. before the program could only handle 1 mio lines in the livedata file. 19/10/2018
 
