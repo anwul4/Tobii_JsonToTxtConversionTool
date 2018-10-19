@@ -6,8 +6,7 @@ import java.awt.event.ActionListener;
 
 public class FrameContent {
 	public JLabel inputlab = new JLabel("write the path and the name of the livedata.json file"); 
-	public JLabel timelab = new JLabel("please enter the length ");
-	public JLabel timelab2 = new JLabel("of the recording in seconds");
+	
 	public JLabel outputLab = new JLabel("write the path and the name of the output file without file extension");
 	public JLabel infoLab = new JLabel("The converter will convert the Tobii Eye-tracker data, accelerometer and gyroscope"
 			+ " data."); 
@@ -18,11 +17,11 @@ public class FrameContent {
 	public JLabel infoLab4 = new JLabel("Pupil center: three coordinates per eye. ");
 	public JLabel infoLab5 = new JLabel("The accelerometer file will contain: Time and three axis of accelerometer.");
 	public JLabel infoLab6 = new JLabel("The gyroscope file will contain: Time and three axis of gyroscope.");
-	public JLabel infoLab7 = new JLabel("All time data is in seconds.");
+	public JLabel infoLab7 = new JLabel("All time data is in seconds. They are synched to the time of the videofeed");
 	public JButton convert = new JButton("convert");
 	public JTextField jsonName = new JTextField(); 
 	public JTextField outputName = new JTextField();
-	public JTextField timeField = new JTextField(); 
+
  
 	public short w = 120;
 	public short h = 50; 
@@ -37,18 +36,13 @@ public class FrameContent {
 	
 		
 		inputlab.setSize(w*4,h);
-		inputlab.setLocation(85, 20);
-		String text = "C:\\Users\\wulff\\Desktop\\Tobii Data\\livedata.json";
-		jsonName.setLocation(50, 60);
+		inputlab.setLocation(140, 20);
+		String text = "C:\\JsonToOgamaTxtConverter\\src\\livedata.json";
+		jsonName.setLocation(140, 60);
 		jsonName.setSize(w*3,h);
 		jsonName.setText(text);
 		
-		timelab.setSize(w*2,h);
-		timelab.setLocation(450,0);
-		timelab2.setSize(w*2,h);
-		timelab2.setLocation(450,20);
-		timeField.setLocation(500, 60);
-		timeField.setSize(w/2,h);
+		
 		
 		outputLab.setSize(w*4,h);
 		outputLab.setLocation(130,260);
@@ -79,9 +73,9 @@ public class FrameContent {
 			{
 				String input = jsonName.getText(); 
 				String output = outputName.getText();
-				String timeString = timeField.getText();
-				double time = Double.parseDouble(timeString); 
-				ReadJson info = new ReadJson(input, time);
+				
+				
+				ReadJson info = new ReadJson(input);
 				info.parseJsonInfo(output);
 				
 			}
@@ -100,8 +94,6 @@ public class FrameContent {
 		pane.add(infoLab5);
 		pane.add(infoLab6);
 		pane.add(infoLab7);
-		pane.add(timeField);
-		pane.add(timelab); 
-		pane.add(timelab2); 
+
 	}
 }

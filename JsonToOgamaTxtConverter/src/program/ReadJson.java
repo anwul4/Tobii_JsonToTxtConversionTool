@@ -9,11 +9,12 @@ import java.util.Set;
 
 import com.google.gson.*;
 import com.google.gson.stream.JsonReader;
+import com.google.gson.stream.JsonToken;
 
 public class ReadJson {
 private String filename = null;
 private String outPutName = null; 
-private double timeFromRec = 0;
+
 private ArrayList<Double> l_pc_x = new ArrayList<Double>(); 
 private ArrayList<Double> l_pc_y = new ArrayList<Double>(); 
 private ArrayList<Double> l_pc_z = new ArrayList<Double>(); 
@@ -52,11 +53,18 @@ private ArrayList<Double> time = new ArrayList<Double>();
 private ArrayList<Double> timeGy = new ArrayList<Double>();
 private ArrayList<Double> timeAc = new ArrayList<Double>();
 
+private ArrayList<Double> timeSec = new ArrayList<Double>();
+private ArrayList<Double> timeGySec = new ArrayList<Double>();
+private ArrayList<Double> timeAcSec = new ArrayList<Double>();
 
-	public ReadJson(String name, double totTime)
+private ArrayList<Double> vtsAr = new ArrayList<Double>();
+private ArrayList<Double> vtsTs = new ArrayList<Double>();
+
+
+	public ReadJson(String name)
 	{
 		filename = name;
-		timeFromRec = totTime; 
+
 		
 	}
 	public void parseJsonInfo(String outputName)
@@ -77,13 +85,14 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 		jreader.setLenient(true);
 		
 		try {
-				for(int i = 0; i < 100000000; i++)
-				{
+				
+			while (jreader.peek() != JsonToken.END_DOCUMENT)
+			{
 					try{
 						jreader.beginObject();
 					} catch (IllegalStateException ise){
 						//ise.printStackTrace();
-						break;
+						//break;
 					}
 						double t_pc_x = 0.0;
 						double t_pc_y = 0.0;
@@ -105,16 +114,25 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						double t_gy_z = 0.0;
 						double t_time = 0.0;
 						int t_state = 0;
+						double vts = 0.0; 
+						double vtsTS = 0.0; 
+						double tempT = 0.0;
+						double latency = 0.0;
 						
 					while(jreader.hasNext())
 					{
+						
+						
 						String name = jreader.nextName();
+						
+						
 						if(name.equals("s"))
 						{
 							t_state = jreader.nextInt();
 						}
 						else if(name.equals("pc"))
 						{	
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -141,17 +159,37 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						}
 						else if(name.equals("pd"))
 						{
+							t_time = tempT;
 							t_pd = jreader.nextDouble();
 							t_pd = checkIfError(t_state, t_pd);
 						}
 						else if(name.equals("ts"))
 						{
-							t_time = jreader.nextDouble();
+							
+							tempT = jreader.nextDouble();
+								
+						}
+						else if(name.equals("l"))
+						{
+							//latency between image taken and streamed data. 
+							//so we subtract the latency from the timestamp before it is processed further. 
+							latency = jreader.nextDouble();
+							tempT = tempT - latency; 
+								
+						}
+						else if(name.equals("vts"))
+						{
+							
+							vtsTS = tempT;
+							vts = jreader.nextDouble();
+							
+							vtsTs.add(vtsTS);
+							vtsAr.add(vts); 
 						}
 					
 						else if(name.equals("gd"))
 						{
-						
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -176,7 +214,7 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						}
 						else if(name.equals("gp"))
 						{
-						
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -205,7 +243,7 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						}	
 						else if(name.equals("gp3"))
 						{
-						
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -236,7 +274,7 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						}	
 						else if(name.equals("ac"))
 						{
-						
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -280,7 +318,7 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 						}
 						else if(name.equals("gy"))
 						{
-						
+							t_time = tempT;
 							jreader.beginArray();
 
 							while (jreader.hasNext()) 
@@ -403,33 +441,25 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 		
 		for(int i = 0; i < time.size(); i++)
 		{
-			if(i == 0)
-			{
-				time.set(i, 0.0);
-			}
-			else if(timeFromRec != 0)
-			{
-				time.set(i, (double)i/(time.size()/timeFromRec));
-			}
-			else time.set(i, (double)i/50); 
+			//subtracting the captured timestamp with VTS at frame 0 timestamp
+			//and dividing it by 1 mio to get it from microseconds to seconds from the start.
+			
+			timeSec.add((time.get(i)-vtsTs.get(0))/1000000 );
+			
+			
 		}
 		
 		for(int i = 0; i < timeAc.size(); i++)
 		{
-			if(i == 0)
-			{
-				timeAc.set(i, 0.0);
-			}
-			else if(timeFromRec != 0)
-			{
-				timeAc.set(i, (double)i/(timeAc.size()/timeFromRec));
-			}
-			else timeAc.set(i, (double)i/100); 
+			
+			timeAcSec.add((timeAc.get(i)-vtsTs.get(0))/1000000 );
+		
 		}
 		
 		for(int i = 0; i < timeGy.size(); i++)
 		{
-			if(i == 0)
+			timeGySec.add((timeGy.get(i)-vtsTs.get(0))/1000000 );
+			/*if(i == 0)
 			{
 				timeGy.set(i, 0.0);
 			}
@@ -438,13 +468,14 @@ private ArrayList<Double> timeAc = new ArrayList<Double>();
 				timeGy.set(i, (double)i/(timeGy.size()/timeFromRec)); 
 			}
 			else timeGy.set(i, (double)i/95); 
+			*/
 		}
 		
 		System.out.println(gp_x.size());
 		System.out.println(ac_x.size());
 		System.out.println(gy_x.size());
 		
-		WriteFile writer = new WriteFile(outPutName, time ,timeAc, timeGy,
+		WriteFile writer = new WriteFile(outPutName, timeSec ,timeAcSec, timeGySec,
 				l_pd,r_pd, gp_x, gp_y, gp3_x,gp3_y, gp3_z, 
 				l_gd_x,l_gd_y, l_gd_z, r_gd_x, r_gd_y, r_gd_z, 
 				l_pc_x, l_pc_y, l_pc_z, r_pc_x, r_pc_y, r_pc_z, 
