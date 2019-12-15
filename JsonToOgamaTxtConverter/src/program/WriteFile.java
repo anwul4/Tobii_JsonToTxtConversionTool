@@ -174,8 +174,6 @@ public class WriteFile {
 			sb.append(",");
 			sb.append(r_pc_x.get(i));
 			sb.append(",");
-			sb.append(r_pc_x.get(i));
-			sb.append(",");
 			sb.append(r_pc_y.get(i));
 			sb.append(",");
 			sb.append(r_pc_z.get(i));
