@@ -132,44 +132,97 @@ public class WriteFile {
 		
 		size.sort(null);
 		
-		
-		info = "Time,PupilDiaL,PupilDiaR,GazePosX,GazePosY,GazePos3DX,GazePos3DY,GazePos3DZ,GazeDirectionLX,"
+		StringBuilder sb = new StringBuilder();
+		sb.append("Time,PupilDiaL,PupilDiaR,GazePosX,GazePosY,GazePos3DX,GazePos3DY,GazePos3DZ,GazeDirectionLX,"
 				+ "GazeDirectionLY,GazeDirectionLZ,GazeDirectionRX,GazeDirectiomRY,GazeDirectionRZ,"
-				+ "PupilCenterLX,PupilCenterLY,PupilCenterLZ,PupilCenterRX,PupilCenterRY,PupilCenterRZ \n";
+				+ "PupilCenterLX,PupilCenterLY,PupilCenterLZ,PupilCenterRX,PupilCenterRY,PupilCenterRZ \n");
 		for(int i = 0; i < size.get(0); i++)
 		{
-			info += t.get(i) +"," + l_pd.get(i) + ","+ r_pd.get(i) + "," + gp_x.get(i) + "," + gp_y.get(i) + "," 
-					+ gp3_x.get(i) + "," + gp3_y.get(i) + "," + gp3_z.get(i) + "," + l_gd_x.get(i)+ "," + l_gd_y.get(i)
-					+ "," + l_gd_z.get(i) + "," + r_gd_x.get(i) + "," + r_gd_y.get(i) + "," + r_gd_z.get(i)
-					+ "," + l_pc_x.get(i) + "," + l_pc_y.get(i) + "," + l_pc_z.get(i) + "," + r_pc_x.get(i)
-					+ "," + r_pc_x.get(i) + "," + r_pc_y.get(i) + "," + r_pc_z.get(i) + "\n";
+			sb.append(t.get(i));
+			sb.append(",");
+			sb.append(l_pd.get(i));
+			sb.append(",");
+			sb.append(r_pd.get(i));
+			sb.append(",");
+			sb.append(gp_x.get(i));
+			sb.append(",");
+			sb.append(gp_y.get(i));
+			sb.append(",");
+			sb.append(gp3_x.get(i));
+			sb.append(",");
+			sb.append(gp3_y.get(i));
+			sb.append(",");
+			sb.append(gp3_z.get(i));
+			sb.append(",");
+			sb.append(l_gd_x.get(i));
+			sb.append(",");
+			sb.append(l_gd_y.get(i));
+			sb.append(",");
+			sb.append(l_gd_z.get(i));
+			sb.append(",");
+			sb.append(r_gd_x.get(i));
+			sb.append(",");
+			sb.append(r_gd_y.get(i));
+			sb.append(",");
+			sb.append(r_gd_z.get(i));
+			sb.append(",");
+			sb.append(l_pc_x.get(i));
+			sb.append(",");
+			sb.append(l_pc_y.get(i));
+			sb.append(",");
+			sb.append(l_pc_z.get(i));
+			sb.append(",");
+			sb.append(r_pc_x.get(i));
+			sb.append(",");
+			sb.append(r_pc_x.get(i));
+			sb.append(",");
+			sb.append(r_pc_y.get(i));
+			sb.append(",");
+			sb.append(r_pc_z.get(i));
+			sb.append("\n");
 		}
 		
-		return info;
+		return sb.toString();
 	}
 	
 	public String stringifyACC(String info, ArrayList<Double> t, ArrayList<Double> ac_x, ArrayList<Double> ac_y,
 			ArrayList<Double> ac_z)
 	{
-		info = "Time,AccelerometerX,AccelerometerY,AccelerometerZ \n";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Time,AccelerometerX,AccelerometerY,AccelerometerZ \n");
 		
 		for(int i = 0; i < t.size(); i++)
 		{
-			info += t.get(i) + "," + ac_x.get(i) + "," + ac_y.get(i) + "," + ac_z.get(i) + "\n"; 
+			sb.append(t.get(i));
+			sb.append(",");
+			sb.append(ac_x.get(i));
+			sb.append(",");
+			sb.append(ac_y.get(i));
+			sb.append(",");
+			sb.append(ac_z.get(i));
+			sb.append("\n");
 		}
 		
-		return info; 
+		return sb.toString(); 
 	}
 	
 	public String stringifyGyro(String info, ArrayList<Double> t, ArrayList<Double> gy_x, ArrayList<Double> gy_y,
 			ArrayList<Double> gy_z)
 	{
-		info = "Time,GyroscopeX,GyroscopeY,GyroscopeZ \n";
+		StringBuilder sb = new StringBuilder();
+		sb.append("Time,GyroscopeX,GyroscopeY,GyroscopeZ \n");
 		for(int i = 0; i < t.size(); i++)
 		{
-			info += t.get(i) + "," + gy_x.get(i) + "," + gy_y.get(i) + "," + gy_z.get(i) + "\n"; 
+			sb.append(t.get(i));
+			sb.append(",");
+			sb.append(gy_x.get(i));
+			sb.append(",");
+			sb.append(gy_y.get(i));
+			sb.append(",");
+			sb.append(gy_z.get(i));
+			sb.append("\n");
 		}
-		return info;
+		return sb.toString();
 	}
 	public void write(String fileName, String content){
 		System.out.println("printing");
